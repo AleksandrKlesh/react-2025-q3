@@ -1,35 +1,65 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import React from 'react';
+import { fetchData, type Character } from './api/fetchData';
+import ErrorBoundary from './components/ErrorBoundary';
+import SearchBar from './components/SearchBar';
+import Results from './components/Results';
 
-function App() {
-  const [count, setCount] = useState(0);
+interface State {
+  loading: boolean;
+  error: string | null;
+  data: Character[];
+  searchQuery: string;
+}
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+class App extends React.Component<object, State> {
+  state: State = {
+    loading: false,
+    error: null,
+    data: [],
+    searchQuery: localStorage.getItem('searchQuery') || '',
+  };
+
+  componentDidMount(): void {
+    this.loadData(this.state.searchQuery);
+  }
+
+  loadData = (query: string) => {
+    this.setState({ loading: true, error: null });
+
+    fetchData(query)
+      .then((results) => this.setState({ data: results, loading: false }))
+      .catch((err) => this.setState({ error: err, loading: false }));
+  };
+
+  handleSearch = (query: string) => {
+    this.setState({ searchQuery: query });
+    this.loadData(query);
+  };
+
+  throwError = () => {
+    throw new Error('Test error button');
+  };
+
+  render() {
+    return (
+      <ErrorBoundary key={this.state.searchQuery}>
+        <div>
+          <SearchBar
+            onSearch={this.handleSearch}
+            initialValue={this.state.searchQuery}
+          />
+          <div>
+            <button onClick={this.throwError}>Throw Error</button>
+          </div>
+          <Results
+            loading={this.state.loading}
+            error={this.state.error}
+            data={this.state.data}
+          />
+        </div>
+      </ErrorBoundary>
+    );
+  }
 }
 
 export default App;
