@@ -7,8 +7,10 @@ export interface Character {
 }
 
 export async function fetchData(query: string): Promise<Character[]> {
-  const queryString = query ? `?name=${query}` : '';
-  const url = `https://rickandmortyapi.com/api/character/${queryString}&page=1`;
+  const baseUrl = 'https://rickandmortyapi.com/api/character';
+  const url = query
+    ? `${baseUrl}/?name=${encodeURIComponent(query)}&page=1`
+    : `${baseUrl}/?page=1`;
 
   const res = await fetch(url);
 
