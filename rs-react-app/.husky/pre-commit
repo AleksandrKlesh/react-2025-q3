@@ -1,4 +1,0 @@
-. "$(dirname "$0")/_/husky.sh"
-
-echo "🔥 Husky hook triggered"
-cd rs-react-app && npm run lint && npm run format:fix
