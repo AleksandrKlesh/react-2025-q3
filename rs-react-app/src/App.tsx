@@ -1,6 +1,5 @@
 import React from 'react';
 import { fetchData, type Character } from './api/fetchData';
-import ErrorBoundary from './components/ErrorBoundary';
 import SearchBar from './components/SearchBar';
 import Results from './components/Results';
 
@@ -9,6 +8,7 @@ interface State {
   error: string | null;
   data: Character[];
   searchQuery: string;
+  crash: boolean;
 }
 
 class App extends React.Component<object, State> {
@@ -17,6 +17,7 @@ class App extends React.Component<object, State> {
     error: null,
     data: [],
     searchQuery: localStorage.getItem('searchQuery') || '',
+    crash: false,
   };
 
   componentDidMount(): void {
@@ -37,27 +38,28 @@ class App extends React.Component<object, State> {
   };
 
   throwError = () => {
-    throw new Error('Test error button');
+    this.setState({ crash: true });
   };
 
   render() {
+    if (this.state.crash) {
+      throw new Error('Simulated error for ErrorBoundary');
+    }
     return (
-      <ErrorBoundary key={this.state.searchQuery}>
+      <div>
+        <SearchBar
+          onSearch={this.handleSearch}
+          initialValue={this.state.searchQuery}
+        />
         <div>
-          <SearchBar
-            onSearch={this.handleSearch}
-            initialValue={this.state.searchQuery}
-          />
-          <div>
-            <button onClick={this.throwError}>Throw Error</button>
-          </div>
-          <Results
-            loading={this.state.loading}
-            error={this.state.error}
-            data={this.state.data}
-          />
+          <button onClick={this.throwError}>Throw Error</button>
         </div>
-      </ErrorBoundary>
+        <Results
+          loading={this.state.loading}
+          error={this.state.error}
+          data={this.state.data}
+        />
+      </div>
     );
   }
 }
