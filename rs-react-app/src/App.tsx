@@ -46,13 +46,18 @@ class App extends React.Component<object, State> {
       throw new Error('Simulated error for ErrorBoundary');
     }
     return (
-      <div>
+      <div className="min-h-screen bg-gray-50">
         <SearchBar
           onSearch={this.handleSearch}
           initialValue={this.state.searchQuery}
         />
-        <div>
-          <button onClick={this.throwError}>Throw Error</button>
+        <div className="p-4">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            onClick={this.throwError}
+          >
+            Throw Error
+          </button>
         </div>
         <Results
           loading={this.state.loading}
