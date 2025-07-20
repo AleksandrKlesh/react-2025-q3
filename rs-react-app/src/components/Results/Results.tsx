@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from './Card';
-import type { Character } from '../api/fetchData';
+import Card from '../Card/Card';
+import type { Character } from '../../api/fetchData';
 
 interface Props {
   loading: boolean;
