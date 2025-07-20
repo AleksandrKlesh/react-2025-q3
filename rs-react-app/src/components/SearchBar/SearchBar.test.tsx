@@ -37,10 +37,10 @@ describe('SearchBar', () => {
 
   it('trims whitespace from search input before saving', () => {
     const { input, button, onSearchMock } = setup();
-    fireEvent.change(input, {target: {value: '  Beth  '}});
+    fireEvent.change(input, { target: { value: '  Beth  ' } });
     fireEvent.click(button);
 
     expect(onSearchMock).toHaveBeenCalledWith('Beth');
     expect(localStorage.getItem('searchQuery')).toBe('Beth');
-  })
+  });
 });

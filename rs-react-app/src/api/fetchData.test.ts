@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fetchData, type Character } from "./fetchData";
+import { fetchData, type Character } from './fetchData';
 
 const mockCharacter: Character = {
   id: 1,
@@ -51,7 +51,7 @@ describe('fetchData', () => {
       },
       text: function (): Promise<string> {
         throw new Error('Function not implemented.');
-      }
+      },
     });
 
     const data = await fetchData('rick');
@@ -90,9 +90,9 @@ describe('fetchData', () => {
       },
       text: function (): Promise<string> {
         throw new Error('Function not implemented.');
-      }
+      },
     });
-    
+
     const data = await fetchData('unknown');
     expect(data).toEqual([]);
   });
@@ -126,7 +126,7 @@ describe('fetchData', () => {
       },
       text: function (): Promise<string> {
         throw new Error('Function not implemented.');
-      }
+      },
     });
 
     await expect(fetchData('fail')).rejects.toThrow('API error: 500');
@@ -161,11 +161,13 @@ describe('fetchData', () => {
       },
       text: function (): Promise<string> {
         throw new Error('Function not implemented.');
-      }
+      },
     });
 
     const data = await fetchData('');
     expect(data).toEqual([mockCharacter]);
-    expect(fetch).toHaveBeenCalledWith('https://rickandmortyapi.com/api/character/?page=1');
+    expect(fetch).toHaveBeenCalledWith(
+      'https://rickandmortyapi.com/api/character/?page=1'
+    );
   });
-})
+});
