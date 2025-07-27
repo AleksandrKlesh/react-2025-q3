@@ -1,5 +1,5 @@
 import Card from '../Card/Card';
-import type { Character } from '../../api/fetchData';
+import type { Character } from '../../types';
 
 interface Props {
   loading: boolean;
@@ -18,10 +18,11 @@ export default function Results({ loading, error, data }: Props) {
       {data.map((item) => (
         <Card
           key={item.id}
+          id={item.id}
           name={item.name}
-          gender={item.gender}
-          species={item.species}
-          image={item.image}
+          gender={item.gender ?? ''}
+          species={item.species ?? ''}
+          image={item.image ?? ''}
         />
       ))}
     </div>
