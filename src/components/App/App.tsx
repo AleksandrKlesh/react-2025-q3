@@ -1,7 +1,7 @@
 import React from 'react';
-import { fetchData, type Character } from './api/fetchData';
-import SearchBar from './components/SearchBar';
-import Results from './components/Results';
+import { fetchData, type Character } from '../../api/fetchData';
+import SearchBar from '../SearchBar/SearchBar';
+import Results from '../Results/Results';
 
 interface State {
   loading: boolean;

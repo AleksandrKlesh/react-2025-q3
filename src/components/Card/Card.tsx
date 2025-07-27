@@ -14,7 +14,7 @@ export default class Card extends React.Component<Props> {
         <img
           className="w-24 h-24 rounded-full object-cover border border-gray-300"
           src={this.props.image}
-          alt="Character"
+          alt={this.props.name}
         />
         <div>
           <h2 className="text-xl font-bold text-gray-800">{this.props.name}</h2>
