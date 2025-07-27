@@ -15,7 +15,7 @@ describe('NotFound', () => {
       '404 - Page Not Found'
     );
     expect(
-      screen.getByText("Oops! The page you're looking for doesn't exist.")
+      screen.getByText('Oops! The page you are looking for does not exist.')
     ).toBeInTheDocument();
   });
 
