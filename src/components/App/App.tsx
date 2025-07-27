@@ -1,29 +1,38 @@
-import { fetchData, type Character } from '../../api/fetchData';
+import { fetchData } from '../../services/fetchData';
+import type { Character } from '../../types';
 import SearchBar from '../SearchBar/SearchBar';
 import Results from '../Results/Results';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Pagination from '../Pagination/Pagination';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 function App() {
+  const [searchParam] = useSearchParams();
+  const page = Number(searchParam.get('page') || 1);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Character[]>([]);
-  const [searchQuery, setSearchQuery] = useState(
-    localStorage.getItem('searchQuery') || ''
-  );
+  const [currentPage, setCurrentPage] = useState(page);
+  const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
   useEffect(() => {
-    loadData(searchQuery);
-  }, [searchQuery]);
+    loadData(searchQuery, currentPage);
+  }, [searchQuery, currentPage]);
 
-  const loadData = (query: string) => {
-    localStorage.setItem('searchQuery', query);
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page]);
 
+  const loadData = (query: string, currentPage: number) => {
     setIsLoading(true);
     setError(null);
 
-    fetchData(query)
+    fetchData(query, currentPage)
       .then((results) => {
-        setData(results);
+        setData(results.results);
+        setTotalPages(results.info.pages);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -40,6 +49,7 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
       <Results loading={isLoading} error={error} data={data} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }
