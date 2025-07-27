@@ -1,72 +1,47 @@
-import React from 'react';
 import { fetchData, type Character } from '../../api/fetchData';
 import SearchBar from '../SearchBar/SearchBar';
 import Results from '../Results/Results';
+import { useEffect, useState } from 'react';
 
-interface State {
-  loading: boolean;
-  error: string | null;
-  data: Character[];
-  searchQuery: string;
-  crash: boolean;
-}
+function App() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<Character[]>([]);
+  const [searchQuery, setSearchQuery] = useState(
+    localStorage.getItem('searchQuery') || ''
+  );
 
-class App extends React.Component<object, State> {
-  state: State = {
-    loading: false,
-    error: null,
-    data: [],
-    searchQuery: localStorage.getItem('searchQuery') || '',
-    crash: false,
-  };
+  useEffect(() => {
+    loadData(searchQuery);
+  }, [searchQuery]);
 
-  componentDidMount(): void {
-    this.loadData(this.state.searchQuery);
-  }
+  const loadData = (query: string) => {
+    localStorage.setItem('searchQuery', query);
 
-  loadData = (query: string) => {
-    this.setState({ loading: true, error: null });
+    setIsLoading(true);
+    setError(null);
 
     fetchData(query)
-      .then((results) => this.setState({ data: results, loading: false }))
-      .catch((err) => this.setState({ error: err, loading: false }));
+      .then((results) => {
+        setData(results);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setIsLoading(false);
+      });
   };
 
-  handleSearch = (query: string) => {
-    this.setState({ searchQuery: query });
-    this.loadData(query);
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
-  throwError = () => {
-    this.setState({ crash: true });
-  };
-
-  render() {
-    if (this.state.crash) {
-      throw new Error('Simulated error for ErrorBoundary');
-    }
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <SearchBar
-          onSearch={this.handleSearch}
-          initialValue={this.state.searchQuery}
-        />
-        <div className="p-4">
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            onClick={this.throwError}
-          >
-            Throw Error
-          </button>
-        </div>
-        <Results
-          loading={this.state.loading}
-          error={this.state.error}
-          data={this.state.data}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
+      <Results loading={isLoading} error={error} data={data} />
+    </div>
+  );
 }
 
 export default App;

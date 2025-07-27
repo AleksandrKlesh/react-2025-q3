@@ -54,16 +54,4 @@ describe('App', () => {
       expect(screen.getByText(/no results found./i)).toBeInTheDocument();
     });
   });
-
-  it('shows error boundary on click', () => {
-    render(<App />);
-    const button = screen.getByText(/throw error/i);
-    userEvent.click(button);
-
-    waitFor(() => {
-      expect(
-        screen.getByText(/something went wrong, try reloading the page/i)
-      ).toBeInTheDocument();
-    });
-  });
 });
