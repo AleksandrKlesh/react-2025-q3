@@ -1,13 +1,27 @@
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
 interface Props {
+  id: number;
   name: string;
   species: string;
   gender: string;
   image: string;
 }
 
-export default function Card({ name, species, gender, image }: Props) {
+export default function Card({ id, name, species, gender, image }: Props) {
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get('page'));
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/?page=${page}&details=${id}`);
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 mb-4 flex gap-4 items-center">
+    <div
+      className="bg-white rounded-xl shadow-md p-4 mb-4 flex gap-4 items-center cursor-pointer"
+      onClick={handleCardClick}
+    >
       <img
         className="w-24 h-24 rounded-full object-cover border border-gray-300"
         src={image}
