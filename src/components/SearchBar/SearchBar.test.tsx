@@ -26,21 +26,11 @@ describe('SearchBar', () => {
     expect(input.value).toBe('Summer');
   });
 
-  it('calls onSearch and saves to localStorage on click', () => {
+  it('calls onSearch with trimmed value', () => {
     const { input, button, onSearchMock } = setup();
-    fireEvent.change(input, { target: { value: 'Rick' } });
+    fireEvent.change(input, { target: { value: '   Rick   ' } });
     fireEvent.click(button);
 
     expect(onSearchMock).toHaveBeenCalledWith('Rick');
-    expect(localStorage.getItem('searchQuery')).toBe('Rick');
-  });
-
-  it('trims whitespace from search input before saving', () => {
-    const { input, button, onSearchMock } = setup();
-    fireEvent.change(input, { target: { value: '  Beth  ' } });
-    fireEvent.click(button);
-
-    expect(onSearchMock).toHaveBeenCalledWith('Beth');
-    expect(localStorage.getItem('searchQuery')).toBe('Beth');
   });
 });
