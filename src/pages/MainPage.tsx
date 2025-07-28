@@ -16,19 +16,21 @@ export default function MainPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div
-        className="flex-1 border-r border-green-200"
-        onClick={handleMainClick}
-      >
-        <App />
-      </div>
-      {details ? (
-        <div className="w-[40%] max-w-md bg-white">
-          <Outlet />
+      <div className="flex">
+        <div
+          className="flex-1 border-r border-green-200"
+          onClick={handleMainClick}
+        >
+          <App />
         </div>
-      ) : (
-        <div></div>
-      )}
+        {details ? (
+          <div className="w-[40%] max-w-md bg-white">
+            <Outlet />
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 }

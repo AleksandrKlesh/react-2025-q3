@@ -10,7 +10,7 @@ interface Props {
 
 export default function Card({ id, name, species, gender, image }: Props) {
   const [searchParams] = useSearchParams();
-  const page = Number(searchParams.get('page'));
+  const page = Number(searchParams.get('page')) || 1;
   const navigate = useNavigate();
 
   const handleCardClick = () => {
