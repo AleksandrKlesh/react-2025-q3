@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function About() {
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="min-h-screen flex flex-col items-center p-4 dark:bg-black dark:text-white">
       <h1 className="text-2xl font-bold mb-2">About us</h1>
       <h2 className="text-xl font-bold mb-2">
         Developed by Aleksandr Kleshchev

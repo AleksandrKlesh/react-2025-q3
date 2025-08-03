@@ -14,13 +14,10 @@ export default function MainPage() {
     }
   };
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <Header />
       <div className="flex">
-        <div
-          className="flex-1 border-r border-green-200"
-          onClick={handleMainClick}
-        >
+        <div className="flex-1" onClick={handleMainClick}>
           <App />
         </div>
         {details ? (
