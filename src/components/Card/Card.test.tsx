@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import Card from './Card';
 import { describe, expect, it, vi } from 'vitest';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ describe('Card', () => {
     name: 'Rick Sanchez',
     species: 'Human',
     gender: 'Male',
-    image: 'https://example.com/rick.png',
+    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
   };
 
   it('renders name, species, and gender correctly', () => {
@@ -37,5 +37,11 @@ describe('Card', () => {
     const img = screen.getByRole('img') as HTMLImageElement;
     expect(img.src).toBe(props.image);
     expect(img.alt).toBe(props.name);
+  });
+
+  it('navigates on card click', () => {
+    render(<Card {...props} />);
+    fireEvent.click(screen.getByText('Rick Sanchez'));
+    expect(mockNavigate).toHaveBeenCalledWith('/?page=1&details=1');
   });
 });

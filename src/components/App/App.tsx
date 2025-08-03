@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Pagination/Pagination';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import Flyout from '../Flyout/Flyout';
 
 function App() {
   const [searchParam] = useSearchParams();
@@ -46,10 +47,11 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 dark:text-white">
       <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
       <Results loading={isLoading} error={error} data={data} />
       <Pagination currentPage={currentPage} totalPages={totalPages} />
+      <Flyout />
     </div>
   );
 }

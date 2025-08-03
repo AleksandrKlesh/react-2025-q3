@@ -18,7 +18,7 @@ export default function SearchBar({ onSearch, initialValue }: Props) {
   };
 
   return (
-    <div className="flex items-center gap-2 p-4 bg-gray-100 shadow-sm">
+    <div className="flex items-center gap-2 p-4 bg-gray-100 shadow-sm dark:bg-black dark:text-white">
       <input
         className="flex-grow p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
         type="text"
