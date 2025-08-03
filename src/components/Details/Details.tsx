@@ -28,7 +28,7 @@ export default function Details() {
   if (!id) return null;
 
   return (
-    <div className="p4 border-1 h-full relative">
+    <div className="p4 border-1 h-full relative dark:bg-black">
       <button
         className="absolute top-2 right-2 text-red-500"
         onClick={() => navigate(`/?page=${page}`)}
