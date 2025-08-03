@@ -1,4 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSelectedItemsStore } from '../../hooks/useSelectedItemsStore';
 
 interface Props {
   id: number;
@@ -12,6 +13,8 @@ export default function Card({ id, name, species, gender, image }: Props) {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const navigate = useNavigate();
+  const { selectedItems, toggleItem } = useSelectedItemsStore();
+  const isSelectedItem = !!selectedItems[id];
 
   const handleCardClick = () => {
     navigate(`/?page=${page}&details=${id}`);
@@ -19,7 +22,7 @@ export default function Card({ id, name, species, gender, image }: Props) {
 
   return (
     <div
-      className="bg-white rounded-xl shadow-md p-4 mb-4 flex gap-4 items-center cursor-pointer"
+      className="bg-white rounded-xl shadow-md p-4 mb-4 flex gap-4 items-center cursor-pointer dark:bg-black"
       onClick={handleCardClick}
     >
       <img
@@ -28,10 +31,22 @@ export default function Card({ id, name, species, gender, image }: Props) {
         alt={name}
       />
       <div>
-        <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-        <p className="text-sm text-gray-600">{species}</p>
-        <p className="text-sm text-gray-600">{gender}</p>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+          {name}
+        </h2>
+        <p className="text-sm text-gray-600 dark:text-white">{species}</p>
+        <p className="text-sm text-gray-600 dark:text-white">{gender}</p>
       </div>
+      <input
+        className="ml-auto w-8 h-8"
+        type="checkbox"
+        onClick={(e) => e.stopPropagation()}
+        onChange={(e) => {
+          e.stopPropagation();
+          toggleItem({ id, name, species, gender, image });
+        }}
+        checked={isSelectedItem}
+      />
     </div>
   );
 }
