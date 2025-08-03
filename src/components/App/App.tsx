@@ -1,72 +1,57 @@
-import React from 'react';
-import { fetchData, type Character } from '../../api/fetchData';
+import { fetchData } from '../../services/fetchData';
+import type { Character } from '../../types';
 import SearchBar from '../SearchBar/SearchBar';
 import Results from '../Results/Results';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Pagination from '../Pagination/Pagination';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
-interface State {
-  loading: boolean;
-  error: string | null;
-  data: Character[];
-  searchQuery: string;
-  crash: boolean;
-}
+function App() {
+  const [searchParam] = useSearchParams();
+  const page = Number(searchParam.get('page') || 1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<Character[]>([]);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
-class App extends React.Component<object, State> {
-  state: State = {
-    loading: false,
-    error: null,
-    data: [],
-    searchQuery: localStorage.getItem('searchQuery') || '',
-    crash: false,
+  useEffect(() => {
+    loadData(searchQuery, currentPage);
+  }, [searchQuery, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page]);
+
+  const loadData = (query: string, currentPage: number) => {
+    setIsLoading(true);
+    setError(null);
+
+    fetchData(query, currentPage)
+      .then((results) => {
+        setData(results.results);
+        setTotalPages(results.info.pages);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setIsLoading(false);
+      });
   };
 
-  componentDidMount(): void {
-    this.loadData(this.state.searchQuery);
-  }
-
-  loadData = (query: string) => {
-    this.setState({ loading: true, error: null });
-
-    fetchData(query)
-      .then((results) => this.setState({ data: results, loading: false }))
-      .catch((err) => this.setState({ error: err, loading: false }));
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
-  handleSearch = (query: string) => {
-    this.setState({ searchQuery: query });
-    this.loadData(query);
-  };
-
-  throwError = () => {
-    this.setState({ crash: true });
-  };
-
-  render() {
-    if (this.state.crash) {
-      throw new Error('Simulated error for ErrorBoundary');
-    }
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <SearchBar
-          onSearch={this.handleSearch}
-          initialValue={this.state.searchQuery}
-        />
-        <div className="p-4">
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            onClick={this.throwError}
-          >
-            Throw Error
-          </button>
-        </div>
-        <Results
-          loading={this.state.loading}
-          error={this.state.error}
-          data={this.state.data}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
+      <Results loading={isLoading} error={error} data={data} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
+    </div>
+  );
 }
 
 export default App;

@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { screen, render } from '@testing-library/react';
 import Results from './Results';
 import { describe, expect, it } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockData = [
   {
@@ -40,7 +41,11 @@ describe('Results', () => {
   });
 
   it('renders a Card for each item in the data array', () => {
-    render(<Results loading={false} error={null} data={mockData} />);
+    render(
+      <MemoryRouter>
+        <Results loading={false} error={null} data={mockData} />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();
   });

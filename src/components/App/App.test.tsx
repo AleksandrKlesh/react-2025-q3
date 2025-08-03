@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import * as api from '../../api/fetchData';
+import * as api from '../../services/fetchData';
 import App from './App';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { screen, render, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
-vi.mock('../../api/fetchData');
+vi.mock('../../services/fetchData');
 
 const mockCharacter = {
   id: 1,
@@ -21,20 +22,32 @@ describe('App', () => {
   });
 
   it('renders SearchBar initially', () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue({
+      results: [],
+      info: { pages: 1 },
+    });
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     expect(
       screen.getByPlaceholderText(/search characters/i)
     ).toBeInTheDocument();
   });
 
   it('shows characters cards on successful fetch', async () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([
-      mockCharacter,
-    ]);
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue({
+      results: [mockCharacter],
+      info: { pages: 1 },
+    });
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     const input = screen.getByPlaceholderText(/search characters/i);
     await userEvent.type(input, 'rick');
 
@@ -44,26 +57,21 @@ describe('App', () => {
   });
 
   it('shows "No results found." on 404', async () => {
-    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+    (api.fetchData as ReturnType<typeof vi.fn>).mockResolvedValue({
+      results: [],
+      info: { pages: 1 },
+    });
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     const input = screen.getByPlaceholderText(/search characters/i);
     await userEvent.type(input, 'unknown');
 
     await waitFor(() => {
       expect(screen.getByText(/no results found./i)).toBeInTheDocument();
-    });
-  });
-
-  it('shows error boundary on click', () => {
-    render(<App />);
-    const button = screen.getByText(/throw error/i);
-    userEvent.click(button);
-
-    waitFor(() => {
-      expect(
-        screen.getByText(/something went wrong, try reloading the page/i)
-      ).toBeInTheDocument();
     });
   });
 });
