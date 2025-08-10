@@ -5,6 +5,7 @@ import App from './App';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { screen, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('../../services/fetchData');
 
@@ -15,6 +16,15 @@ const mockCharacter = {
   gender: 'Male',
   image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
 };
+
+const mockQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
 describe('App', () => {
   beforeEach(() => {
@@ -28,13 +38,41 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     expect(
       screen.getByPlaceholderText(/search characters/i)
     ).toBeInTheDocument();
+  });
+
+  it('shows loading during fetch', async () => {
+    (api.fetchData as ReturnType<typeof vi.fn>).mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(
+            () => resolve({ results: [mockCharacter], info: { pages: 1 } }),
+            50
+          )
+        )
+    );
+
+    render(
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+    waitFor(() => {
+      expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+    });
   });
 
   it('shows characters cards on successful fetch', async () => {
@@ -44,9 +82,11 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     const input = screen.getByPlaceholderText(/search characters/i);
     await userEvent.type(input, 'rick');
@@ -63,9 +103,11 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
     const input = screen.getByPlaceholderText(/search characters/i);
     await userEvent.type(input, 'unknown');
