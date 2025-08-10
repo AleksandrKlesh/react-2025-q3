@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Details from './Details';
 import * as fetchModule from '../../services/fetchCharecter';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('../../services/fetchCharecter');
 
@@ -19,6 +20,15 @@ vi.mock('react-router-dom', async () => {
     useSearchParams: vi.fn(),
   };
 });
+
+const mockQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
 const mockCharacter = {
   id: 1,
@@ -42,9 +52,11 @@ describe('<Details />', () => {
     vi.spyOn(fetchModule, 'default').mockResolvedValue(mockCharacter);
 
     render(
-      <MemoryRouter initialEntries={['/?page=2&details=1']}>
-        <Details />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter initialEntries={['/?page=2&details=1']}>
+          <Details />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     expect(screen.getByText(/Loading details/i)).toBeInTheDocument();
@@ -71,12 +83,12 @@ describe('<Details />', () => {
 
     vi.spyOn(fetchModule, 'default').mockResolvedValue(mockCharacter);
 
-    const { default: DetailsWithMocks } = await import('./Details');
-
     render(
-      <MemoryRouter>
-        <DetailsWithMocks />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter initialEntries={['/?page=2&details=1']}>
+          <Details />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     await waitFor(() => screen.getByText(/Rick Sanchez/i));
@@ -89,9 +101,11 @@ describe('<Details />', () => {
     vi.spyOn(fetchModule, 'default').mockResolvedValue(null);
 
     render(
-      <MemoryRouter initialEntries={['/?page=1&details=123']}>
-        <Details />
-      </MemoryRouter>
+      <QueryClientProvider client={mockQueryClient()}>
+        <MemoryRouter initialEntries={['/?page=2&details=1']}>
+          <Details />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     await waitFor(() => {

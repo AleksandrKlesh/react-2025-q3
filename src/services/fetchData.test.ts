@@ -11,40 +11,6 @@ const mockCharacter: Character = {
 };
 
 describe('fetchData', () => {
-  // const response = {
-  //   ok: true,
-  //   json: async () => ({
-  //     results: [mockCharacter],
-  //     info: { pages: 1 },
-  //   }),
-  //   status: 200,
-  //   headers: new Headers,
-  //   redirected: false,
-  //   statusText: '',
-  //   type: 'default',
-  //   url: '',
-  //   clone: function (): Response {
-  //     throw new Error('Function not implemented.');
-  //   },
-  //   body: null,
-  //   bodyUsed: false,
-  //   arrayBuffer: function (): Promise<ArrayBuffer> {
-  //     throw new Error('Function not implemented.');
-  //   },
-  //   blob: function (): Promise<Blob> {
-  //     throw new Error('Function not implemented.');
-  //   },
-  //   bytes: function (): Promise<Uint8Array> {
-  //     throw new Error('Function not implemented.');
-  //   },
-  //   formData: function (): Promise<FormData> {
-  //     throw new Error('Function not implemented.');
-  //   },
-  //   text: function (): Promise<string> {
-  //     throw new Error('Function not implemented.');
-  //   }
-  // }
-
   beforeEach(() => {
     globalThis.fetch = vi.fn();
   });

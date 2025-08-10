@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import fetchCharacter from '../../services/fetchCharecter';
-import type { Character } from '../../types';
+import { useDetailsQuery } from '../../hooks/useDetailsQuery';
 
 export default function Details() {
   const [searchParams] = useSearchParams();
@@ -9,21 +7,7 @@ export default function Details() {
   const id = Number(searchParams.get('details'));
   const page = searchParams.get('page');
 
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (id) {
-      loadCharacter(id);
-    }
-  }, [id]);
-
-  const loadCharacter = (id: number) => {
-    setLoading(true);
-    fetchCharacter(id)
-      .then((result) => setCharacter(result))
-      .finally(() => setLoading(false));
-  };
+  const { data: character, isLoading: loading } = useDetailsQuery(id);
 
   if (!id) return null;
 

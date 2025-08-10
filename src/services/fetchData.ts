@@ -4,6 +4,7 @@ export async function fetchData(
   query: string,
   currentPage: number
 ): Promise<Response> {
+  console.log('Fetching characters...', { query, currentPage });
   const baseUrl = 'https://rickandmortyapi.com/api/character';
   const url = query
     ? `${baseUrl}/?name=${encodeURIComponent(query)}&page=${currentPage}`
