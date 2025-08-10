@@ -4,31 +4,26 @@ import MainPage from '../pages/MainPage';
 import NotFound from '../pages/NotFoundPage';
 import About from '../pages/AboutPage';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <MainPage />,
-      children: [
-        {
-          path: '',
-          element: <Details />,
-          index: true,
-        },
-      ],
-    },
-    {
-      path: '/about',
-      element: <About />,
-    },
-    {
-      path: '*',
-      element: <NotFound />,
-    },
-  ],
+const router = createBrowserRouter([
   {
-    basename: '/react-2025-q3/rs-react-app',
-  }
-);
+    path: '/',
+    element: <MainPage />,
+    children: [
+      {
+        path: '',
+        element: <Details />,
+        index: true,
+      },
+    ],
+  },
+  {
+    path: '/about',
+    element: <About />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+]);
 
 export default router;
