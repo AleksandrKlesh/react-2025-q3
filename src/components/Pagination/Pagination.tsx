@@ -1,4 +1,6 @@
-import { useSearchParams } from 'react-router-dom';
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Props {
   currentPage: number;
@@ -6,11 +8,13 @@ interface Props {
 }
 
 export default function Pagination({ currentPage, totalPages }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const goToPage = (page: number) => {
-    searchParams.set('page', page.toString());
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams?.toString());
+    params?.set('page', page.toString());
+    router.push(`/?${params.toString()}`);
   };
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1).slice(

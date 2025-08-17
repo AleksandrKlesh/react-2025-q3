@@ -1,16 +1,26 @@
+'use client';
+
 import SearchBar from '../SearchBar/SearchBar';
 import Results from '../Results/Results';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 import Pagination from '../Pagination/Pagination';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import Flyout from '../Flyout/Flyout';
 import { useCharactersQuery } from '../../hooks/useCharactersQuery';
 import { RefreshButton } from '../RefreshButton/RefreshButton';
+import { Character, Info } from '../../types';
 
-function App() {
-  const [searchParam] = useSearchParams();
-  const page = Number(searchParam.get('page') || 1);
+type AppPageProps = {
+  initialData: {
+    results: Character[];
+    info: Info;
+  };
+};
+
+function App({ initialData }: AppPageProps) {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams?.get('page') || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
@@ -34,11 +44,11 @@ function App() {
       <Results
         loading={isLoading || isFetching}
         error={isError ? 'Error loading data' : null}
-        data={data?.results ?? []}
+        data={(initialData.results && data?.results) || []}
       />
       <Pagination
         currentPage={currentPage}
-        totalPages={data?.info.pages ?? 0}
+        totalPages={(initialData.info.pages && data?.info.pages) || 0}
       />
       <Flyout />
     </div>

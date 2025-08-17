@@ -1,16 +1,10 @@
+'use client';
+
 import type { Character } from '../types';
+import downloadServerCsv from './downloadServerCsv';
 
-export default function downloadCsv(items: Character[]) {
-  const headers = ['ID', 'Name', 'Species', 'Gender', 'Image'];
-  const rows = items.map((item) => [
-    item.id,
-    item.name,
-    item.species,
-    item.gender,
-    item.image,
-  ]);
-
-  const csv = [headers, ...rows].map((row) => row.join(',')).join('\n');
+export default async function downloadCsv(items: Character[]) {
+  const csv = await downloadServerCsv(items);
   const blob = new Blob([csv], { type: 'text/csv' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);

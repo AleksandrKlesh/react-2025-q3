@@ -1,31 +1,41 @@
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+'use client';
+
+import { useSearchParams, useRouter } from 'next/navigation';
 import App from '../components/App/App';
 import Header from '../components/Header/Header';
+import Details from '../components/Details/Details';
+import { Character, Info } from '../types';
 
-export default function MainPage() {
-  const [searchParam] = useSearchParams();
-  const navigate = useNavigate();
-  const details = searchParam.get('details');
-  const page = searchParam.get('page') || '1';
+type MainPageProps = {
+  initialData: {
+    results: Character[];
+    info: Info;
+  };
+};
+
+export default function MainPage({ initialData }: MainPageProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const details = searchParams?.get('details');
+  const page = searchParams?.get('page') || '1';
 
   const handleMainClick = () => {
     if (details) {
-      navigate(`/?page=${page}`);
+      router.push(`/?page=${page}`);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <Header />
       <div className="flex">
         <div className="flex-1" onClick={handleMainClick}>
-          <App />
+          <App initialData={initialData} />
         </div>
-        {details ? (
+        {details && (
           <div className="w-[40%] max-w-md bg-white">
-            <Outlet />
+            <Details />
           </div>
-        ) : (
-          <div></div>
         )}
       </div>
     </div>
