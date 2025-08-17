@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
+import { useTranslations } from 'next-intl';
+import { Link } from '../i18n/navigation';
 
 function About() {
+  const t = useTranslations();
   return (
     <div className="min-h-screen flex flex-col items-center p-4 dark:bg-black dark:text-white">
-      <h1 className="text-2xl font-bold mb-2">About us</h1>
-      <h2 className="text-xl font-bold mb-2">
-        Developed by Aleksandr Kleshchev
-      </h2>
-      <p className="mb-4">Passionate junior developer studying at RS-School.</p>
+      <h1 className="text-2xl font-bold mb-2">{t('About.title')}</h1>
+      <h2 className="text-xl font-bold mb-2">{t('About.developed')}</h2>
+      <p className="mb-4">{t('About.description')}</p>
       <a
         href="https://rs.school/courses/reactjs"
         target="_blank"
@@ -16,8 +16,8 @@ function About() {
       >
         RS-School React Course
       </a>
-      <Link to="/" className="text-blue-600 hover:underline">
-        Go back to homepage
+      <Link href="/" className="text-blue-600 hover:underline">
+        {t('About.back')}
       </Link>
     </div>
   );
