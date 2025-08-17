@@ -1,0 +1,18 @@
+{
+  "Header": {
+    "home": "Home",
+    "about": "About"
+  },
+  "About": {
+    "title": "About us",
+    "developed": "Developed by Aleksandr Kleshchev",
+    "description": "Passionate junior developer studying at RS-School.",
+    "back": "Go back to homepage"
+  },
+  "Search": {
+    "search": "Search"
+  },
+  "Refresh": {
+    "refresh": "Refresh"
+  }
+}
