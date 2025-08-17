@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 
 export default function SearchBar({ onSearch, initialValue }: Props) {
   const [inputValue, setInputValue] = useState(initialValue || '');
+  const t = useTranslations();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -30,7 +32,7 @@ export default function SearchBar({ onSearch, initialValue }: Props) {
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
         onClick={handleSearch}
       >
-        Search
+        {t('Search.search')}
       </button>
     </div>
   );
