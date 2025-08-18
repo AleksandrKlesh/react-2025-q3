@@ -1,5 +1,5 @@
 import { useSelectedItemsStore } from '../../hooks/useSelectedItemsStore';
-import downloadCsv from '../../utils/downloadCSV';
+import downloadCsv from '../../utils/downloadCsvFile';
 
 export default function Flyout() {
   const { selectedItems, clearItems } = useSelectedItemsStore();

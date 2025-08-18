@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Flyout from './Flyout';
 import { fireEvent, render, screen } from '@testing-library/react';
-import downloadCsv from '../../utils/downloadCSV';
+import downloadCsv from '../../utils/downloadCsvFile';
 
 vi.mock('../../hooks/useSelectedItemsStore');
 vi.mock('../../utils/downloadCSV', () => ({

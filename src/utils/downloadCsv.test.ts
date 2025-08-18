@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Character } from '../types';
-import downloadCsv from './downloadCSV';
+import downloadCsv from './downloadCsvFile';
 
 const mockCharacters: Character[] = [
   {
