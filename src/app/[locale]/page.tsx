@@ -1,4 +1,4 @@
-import MainPage from '../../pages/MainPage';
+import MainPage from '../../views/MainPage';
 import { fetchData } from '../../services/fetchData';
 import { Character, Info } from '../../types';
 

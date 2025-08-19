@@ -1,4 +1,4 @@
-import About from '../../../pages/AboutPage';
+import About from '../../../views/AboutPage';
 
 export default function AboutRouterPage() {
   return (

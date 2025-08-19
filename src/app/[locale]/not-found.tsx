@@ -1,4 +1,4 @@
-import NotFound from '../../pages/NotFoundPage';
+import NotFound from '../../views/NotFoundPage';
 
 export default function NotFoundRouterPage() {
   return (
