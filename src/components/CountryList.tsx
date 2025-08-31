@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import type { Co2Dataset } from '../types/types';
 import { CountryCard } from './CountryCard';
 import { ColumnModal } from './ColumnModal';
@@ -21,44 +21,53 @@ function CountryList({ resource }: Props) {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  };
+  }, []);
 
-  const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSort = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value as 'name' | 'population');
-  };
+  }, []);
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setYear(Number(e.target.value));
-  };
+  const handleYearChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setYear(Number(e.target.value));
+    },
+    []
+  );
 
-  const handleToggleColumn = (col: string) => {
+  const handleToggleColumn = useCallback((col: string) => {
     setSelectedColumns((prev) =>
       prev.includes(col) ? prev.filter((c) => c !== col) : [...prev, col]
     );
-  };
+  }, []);
 
-  let countries = Object.entries(data).map(([name, c]) => ({
-    name,
-    ...c,
-  }));
+  const countries = useMemo(
+    () => Object.entries(data).map(([name, c]) => ({ name, ...c })),
+    [data]
+  );
 
-  if (search) {
-    countries = countries.filter((c) =>
-      c.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }
+  const filtered = useMemo(() => {
+    let list = countries;
 
-  if (sortBy === 'population') {
-    countries = [...countries].sort((a, b) => {
-      const popA = a.data.find((d) => d.year === year)?.population ?? 0;
-      const popB = b.data.find((d) => d.year === year)?.population ?? 0;
-      return popB - popA;
-    });
-  } else {
-    countries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
-  }
+    if (search) {
+      list = list.filter((c) =>
+        c.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (sortBy === 'population') {
+      list = [...list].sort((a, b) => {
+        const popA = a.data.find((d) => d.year === year)?.population ?? 0;
+        const popB = b.data.find((d) => d.year === year)?.population ?? 0;
+        return popB - popA;
+      });
+    } else {
+      list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return list;
+  }, [countries, search, sortBy, year]);
 
   return (
     <div>
@@ -86,7 +95,7 @@ function CountryList({ resource }: Props) {
       )}
 
       <div className="flex flex-col gap-4">
-        {countries.map((country) => (
+        {filtered.map((country) => (
           <CountryCard
             key={country.name}
             country={country}
@@ -99,4 +108,6 @@ function CountryList({ resource }: Props) {
   );
 }
 
-export default CountryList;
+const countryListMemo = React.memo(CountryList);
+
+export { countryListMemo as CountryList };
