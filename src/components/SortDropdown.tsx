@@ -14,4 +14,6 @@ function SortDropdown({ sortBy, onSort }: Props) {
   );
 }
 
-export { SortDropdown };
+const sortDropdownMemo = React.memo(SortDropdown);
+
+export { sortDropdownMemo as SortDropdown };
