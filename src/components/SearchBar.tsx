@@ -5,7 +5,7 @@ interface Props {
   onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function SearchBar({ search, onSearch }: Props) {
+const SearchBar: React.FC<Props> = ({ search, onSearch }: Props) => {
   return (
     <input
       type="text"
@@ -15,6 +15,8 @@ function SearchBar({ search, onSearch }: Props) {
       className="border rounded p-2"
     />
   );
-}
+};
 
-export { SearchBar };
+const searchBarMemo = React.memo(SearchBar);
+
+export { searchBarMemo as SearchBar };
