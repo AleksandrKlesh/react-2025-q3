@@ -6,9 +6,9 @@
 
 #### Column selection
 
-Commit Duration: 1.6s
-Render Duration: 88.4ms
-Interactions: CountryList
+- Commit Duration: 1.6s
+- Render Duration: 88.4ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/column-selection-flamegraph-before.png)
@@ -18,21 +18,21 @@ Ranked Chart:
 
 #### Sort by name
 
-Commit Duration: 2.1s
-Render Duration: 78.4ms
-Interactions: CountryList
+- Commit Duration: 2.1s
+- Render Duration: 78.4ms
+- Interactions: CountryList
 
 Flame Graph:
-![Flame Graph](/docs/sort-by-name-flamegraph-beforee.png)
+![Flame Graph](/docs/sort-by-name-flamegraph-before.png)
 
 Ranked Chart:
 ![Ranked Chart](/docs/sort-by-name-ranked-before.png)
 
 #### Year selection
 
-Commit Duration: 2s
-Render Duration: 89.7ms
-Interactions: CountryList
+- Commit Duration: 2s
+- Render Duration: 89.7ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/year-selection-flamegraph-before.png)
@@ -42,9 +42,9 @@ Ranked Chart:
 
 #### Country search
 
-Commit Duration: 1.8s
-Render Duration: 53.8ms
-Interactions: CountryList
+- Commit Duration: 1.8s
+- Render Duration: 53.8ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/country-search-flamegraph-before.png)
@@ -56,9 +56,9 @@ Ranked Chart:
 
 #### Column selection
 
-Commit Duration: 1.6s
-Render Duration: 5.8ms
-Interactions: CountryList
+- Commit Duration: 1.6s
+- Render Duration: 5.8ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/column-selection-flamegraph-after.png)
@@ -68,9 +68,9 @@ Ranked Chart:
 
 #### Sort by name
 
-Commit Duration: 2.1s
-Render Duration: 16.5ms
-Interactions: CountryList
+- Commit Duration: 2.1s
+- Render Duration: 16.5ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/sort-by-name-flamegraph-after.png)
@@ -80,9 +80,9 @@ Ranked Chart:
 
 #### Year selection
 
-Commit Duration: 1.5s
-Render Duration: 100.7ms
-Interactions: CountryList
+- Commit Duration: 1.5s
+- Render Duration: 100.7ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/year-selection-flamegraph-after.png)
@@ -92,9 +92,9 @@ Ranked Chart:
 
 #### Country search
 
-Commit Duration: 2.2s
-Render Duration: 21ms
-Interactions: CountryList
+- Commit Duration: 2.2s
+- Render Duration: 21ms
+- Interactions: CountryList
 
 Flame Graph:
 ![Flame Graph](/docs/country-search-flamegraph-after.png)
