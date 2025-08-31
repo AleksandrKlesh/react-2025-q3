@@ -4,7 +4,9 @@ import { CountryList } from './components/CountryList';
 import type { Co2Dataset } from './types/types';
 import { Spinner } from './components/Spinner';
 
-const resource = createDataResource<Co2Dataset>('/owid-co2-data.json');
+const resource = createDataResource<Co2Dataset>(
+  'https://raw.githubusercontent.com/AleksandrKlesh/performance-data/refs/heads/main/owid-co2-data.json'
+);
 
 export default function App() {
   return (
