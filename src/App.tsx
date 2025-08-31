@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { createDataResource } from './services/dataLoader';
-import CountryList from './components/CountryList';
+import { CountryList } from './components/CountryList';
 import type { Co2Dataset } from './types/types';
 import { Spinner } from './components/Spinner';
 
