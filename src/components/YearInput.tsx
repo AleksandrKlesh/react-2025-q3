@@ -5,15 +5,15 @@ interface Props {
   onYearChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function YearInput({ year, onYearChange }: Props) {
-  return (
-    <input
-      type="number"
-      value={year}
-      onChange={onYearChange}
-      className="border rounded p-2 w-28"
-    />
-  );
-}
+const YearInput: React.FC<Props> = ({ year, onYearChange }) => (
+  <input
+    type="number"
+    value={year}
+    onChange={onYearChange}
+    className="border rounded p-2 w-28"
+  />
+);
 
-export { YearInput };
+const yearInputMemo = React.memo(YearInput);
+
+export { yearInputMemo as YearInput };
