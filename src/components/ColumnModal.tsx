@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface Props {
   availableColumns: string[];
   selected: string[];
@@ -33,4 +35,6 @@ function ColumnModal({ availableColumns, selected, onToggle, onClose }: Props) {
   );
 }
 
-export { ColumnModal };
+const columnModalMemo = React.memo(ColumnModal);
+
+export { columnModalMemo as ColumnModal };
